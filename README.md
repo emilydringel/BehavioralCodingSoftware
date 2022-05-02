@@ -5,5 +5,8 @@
 npm install
 npm install electron-store
 npm install electron-reload
+npm install bootstrap
+npm install jquery
+npm install popper.js
 npm start
 

@@ -10,32 +10,82 @@
 const { ipcRenderer } = require('electron')
 
 // delete todo by its text value ( used below in event listener)
+/*
 const deleteTodo = (e) => {
   ipcRenderer.send('delete-todo', e.target.textContent)
 }
+*/
 
-// create add todo window button
-document.getElementById('createTodoBtn').addEventListener('click', () => {
-  ipcRenderer.send('add-todo-window')
-})
+let currentProjects = {}
 
 // on receive todos
-ipcRenderer.on('todos', (event, todos) => {
+ipcRenderer.on('projects', (event, projects) => {
   // get the todoList ul
-  const todoList = document.getElementById('todoList')
-
+  const projectList = document.getElementById('projects')
   // create html string
-  const todoItems = todos.reduce((html, todo) => {
-    html += `<li class="todo-item">${todo}</li>`
+  let newHTML = `<option value="none" selected disabled hidden>Select an Option</option>`
+  for(let i=0; i<projects.length; i++){
+    newHTML += `<option value="` + projects[i]+`">`+projects[i]+`</option>`
+  }
+  document.getElementById("projects").innerHTML = newHTML;
+  document.getElementById("observationProjects").innerHTML = newHTML;
+  currentProjects=projects
+}, '')
 
-    return html
-  }, '')
+document.getElementById("createProject").addEventListener('click', function(event) {
+  let val = document.getElementById("projectName").value
+  if(unique(val)){
+    let jsonName = {"name": val}
+    ipcRenderer.send('edit-project-window',jsonName)
+    reset(true)
+  }else{
+    document.getElementById('uniquenessError').innerHTML = "Error: A project with this name already exists. Please choose a new name."
+  }
+});
 
-  // set list html to the todo items
-  todoList.innerHTML = todoItems
+function unique(projectName){
+  for(let i=0; i<currentProjects.length; i++){
+    console.log(currentProjects[i].name)
+    if(currentProjects[i].name == projectName){
+      return false;
+    }
+  }
+  return true;
+}
 
-  // add click handlers to delete the clicked todo
-  todoList.querySelectorAll('.todo-item').forEach(item => {
-    item.addEventListener('click', deleteTodo)
-  })
-})
+document.getElementById("openProject").addEventListener('click', function(event) {
+  let val = document.getElementById("projects").value
+  let jsonName = {"name": val}
+  ipcRenderer.send('edit-project-window',jsonName)
+  reset(true)
+});
+
+function reset(bool){
+  if(bool){
+    document.getElementById('uniquenessError').innerHTML=""
+    document.getElementById('projectName').value=""
+    document.getElementById('projects').selectedIndex = 0;
+    document.getElementById('observations').selectedIndex = 0;
+  }
+ 
+}
+
+document.getElementById("observationProjects").addEventListener('change', function(event){
+  ipcRenderer.send('get-observation-options', this.value)
+});
+
+ipcRenderer.on('observation-options', (event, observations) => {
+  let newHTML = `<option value="none" selected disabled hidden>Select an Option</option>`
+  for(let i=0; i<observations.length; i++){
+    newHTML += `<option value="` + observations[i]+`">`+observations[i]+`</option>`
+  }
+  document.getElementById("observations").innerHTML = newHTML;
+}, '')
+
+document.getElementById("openObservation").addEventListener('click', function(event) {
+  let project = document.getElementById("observationProjects").value
+  let observation = document.getElementById("observations").value
+  let observationID = {"project": project, "observation": observation}
+  ipcRenderer.send('coding-window', observationID)
+  reset(true)
+});

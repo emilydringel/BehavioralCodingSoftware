@@ -1,0 +1,119 @@
+body{
+    font-size: 14px !important;
+}
+
+#titles{
+    height: 50px;
+    padding: 10px;
+    font-size: 24px;
+}
+
+h2{
+    font-size: 12px;
+    background-color: #1976d2;
+    border-color: #004ba0;
+    border-style: none none solid none;
+    border-width: 10px;
+    color: white;
+    margin: 0px;
+}
+
+#project-title{
+    text-align: right;
+    font-size: 18px;
+}
+
+#main-body{
+    height: 725px;
+}
+
+#left{
+    height: 725px;
+}
+
+#right{
+    height: 725px;
+}
+
+#videoDiv{
+    height:45%;
+    width: 100%;
+    text-align: center;
+    padding: 13px;
+}
+
+#data{
+    height:55%;
+    width: 100%;
+}
+
+table{
+    height: 90%;
+    width: 100%;
+    display: block;
+    overflow: scroll;
+}
+
+.time{
+    width: 55px;
+}
+
+.endtime{
+    width: 85px;
+}
+
+.subject{
+    width: 90px;
+}
+
+
+.behavior{
+    width: 110px;
+}
+
+.modifier{
+    width: 110px;
+}
+
+.name{
+    width: 325px;
+}
+
+.shortcut{
+    width: 100px;
+}
+
+.subjectname{
+    width: 150px;
+}
+
+.description{
+    width: 275px;
+}
+
+td{
+    height: 30px;
+    word-break: break-word;
+}
+
+#behaviors{
+    height:65%;
+    width: 100%
+}
+
+#subjects{
+    height: 25%;
+    width: 100%
+}
+
+#save{
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+} 
+
+.smaller{
+    width: 120px !important;
+}
