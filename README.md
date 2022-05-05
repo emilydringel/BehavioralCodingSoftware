@@ -2,11 +2,10 @@
 
 ## Set-Up Intructions:
 
+1) Download the associated software
+2) Run these queries in your terminal: 
 npm install
 npm install electron-store
 npm install electron-reload
-npm install bootstrap
-npm install jquery
-npm install popper.js
 npm start
 
