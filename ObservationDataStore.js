@@ -19,6 +19,13 @@ class ObservationDataStore extends Store {
   editBaseData(observation){
     this.observationData.associatedSubjects = observation.associatedSubjects
     this.observationData.videos = observation.videos
+    return this.saveData()
+  }
+
+  updateCodes(observation){
+    this.observationData.data = observation.data
+    console.log(this.observationData)
+    return this.saveData()
   }
 
   saveData () {

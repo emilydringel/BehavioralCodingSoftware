@@ -19,7 +19,7 @@
     <div class="container-fluid">
       <h2 class="row" id="titles">
         <div id="page-title" class="col-6">Behavioral Coding Page</div>
-        <div id="project-title" class="col">Project Name: Observation Name</div>
+        <div id="project-title" class="col"><span id="project-name"></span>: <span id="observation-name"></span></div>
       </h2>
       <div class="row" id="main-body">
         <div class="col-6" id="left">
@@ -34,87 +34,18 @@
                   <tr>
                     <th scope="col" class="time">Time</th>
                     <th scope="col" class="endtime">End Time</th>
-                    <th scope="col" class="subject">Subject</th>
+                    <th scope="col" class="involvedSubject">Subject</th>
                     <th scope="col" class="behavior">Behavior</th>
                     <th scope="col" class="modifier">Modifier</th>
                   </tr>
                 </thead>
                 <tbody id="data-table-body">
-                  <tr> 
-                    <td scope="row" class="time"></td>
-                    <td class="endtime"></td>
-                    <td class="subject"></td>
-                    <td class="behavior"></td>
-                    <td class="modifier"></td>
-                  </tr>
-                  <tr> 
-                    <td scope="row" class="time"></td>
-                    <td class="endtime"></td>
-                    <td class="subject"></td>
-                    <td class="behavior"></td>
-                    <td class="modifier"></td>
-                  </tr>
-                  <tr> 
-                    <td scope="row" class="time"></td>
-                    <td class="endtime"></td>
-                    <td class="subject"></td>
-                    <td class="behavior"></td>
-                    <td class="modifier"></td>
-                  </tr>
-                  <tr> 
-                    <td scope="row" class="time"></td>
-                    <td class="endtime"></td>
-                    <td class="subject"></td>
-                    <td class="behavior"></td>
-                    <td class="modifier"></td>
-                  </tr>
-                  <tr> 
-                    <td scope="row" class="time"></td>
-                    <td class="endtime"></td>
-                    <td class="subject"></td>
-                    <td class="behavior"></td>
-                    <td class="modifier"></td>
-                  </tr>
-                  <tr> 
-                    <td scope="row" class="time"></td>
-                    <td class="endtime"></td>
-                    <td class="subject"></td>
-                    <td class="behavior"></td>
-                    <td class="modifier"></td>
-                  </tr>
-                  <tr> 
-                    <td scope="row" class="time"></td>
-                    <td class="endtime"></td>
-                    <td class="subject"></td>
-                    <td class="behavior"></td>
-                    <td class="modifier"></td>
-                  </tr>
-                  <tr> 
-                    <td scope="row" class="time"></td>
-                    <td class="endtime"></td>
-                    <td class="subject"></td>
-                    <td class="behavior"></td>
-                    <td class="modifier"></td>
-                  </tr>
-                  <tr> 
-                    <td scope="row" class="time"></td>
-                    <td class="endtime"></td>
-                    <td class="subject"></td>
-                    <td class="behavior"></td>
-                    <td class="modifier"></td>
-                  </tr>
-                  <tr> 
-                    <td scope="row" class="time"></td>
-                    <td class="endtime"></td>
-                    <td class="subject"></td>
-                    <td class="behavior"></td>
-                    <td class="modifier"></td>
-                  </tr>
                 </tbody>
               </table>
           </div>
         </div>
         <div class="col" id="right">
+          
           <div id="behaviors">
               <table class="table table-striped">
                 <thead>
@@ -124,74 +55,6 @@
                   </tr>
                 </thead>
                 <tbody id="behavior-table-body"></tbody>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
-                <tr>
-                  <td scope="row" class="name"></td>
-                  <td class="shortcut"></td>
-                </tr>
               </table>
           </div>
           <div id="subjects">
@@ -203,43 +66,31 @@
                   </tr>
                 </thead>
                 <tbody id="subject-table-body">
-                  <tr>
-                    <td scope="row" class="subjectname"></td>
-                    <td class="description"></td>
-                  </tr>
-                  <tr>
-                    <td scope="row" class="subjectname"></td>
-                    <td class="description"></td>
-                  </tr>
-                  <tr>
-                    <td scope="row" class="subjectname"></td>
-                    <td class="description"></td>
-                  </tr>
-                  <tr>
-                    <td scope="row" class="subjectname"></td>
-                    <td class="description"></td>
-                  </tr>
-                  <tr>
-                    <td scope="row" class="subjectname"></td>
-                    <td class="description"></td>
-                  </tr>
-                  <tr>
-                    <td scope="row" class="subjectname"></td>
-                    <td class="description"></td>
-                  </tr>
-                  <tr>
-                    <td scope="row" class="subjectname"></td>
-                    <td class="description"></td>
-                  </tr>
                 </tbody>
               </table>
           </div>
           <div id="save">
-              <button id="saveProject" class="smaller large-button">Save</button>
-              <button id="saveAndCloseProject" class="smaller large-button">Save & Close</button>
-              <button id="close" class="smaller large-button">Close</button>
+              <div class="buttons">
+                <button id="saveProject" class="smaller large-button">Save</button>
+                <button id="saveAndCloseProject" class="smaller large-button">Save & Close</button>
+              </div>
+              <div class="buttons">
+                <button id="close" class="smaller large-button">Close</button>
+                <button id="export" class="smaller large-button">Export</button>
+              </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div id="modifierDiv">
+      <h3>Add A Modifier</h3>
+      
+      <div id="create-your-own">
+        <input type="text" id="modifier" name="modifier" class="field">
+        <br>
+        <input class="small-button" type="submit" id="chooseModifier"><br>
+      </div>
+      <div id="options">
       </div>
     </div>
     <script src="./coding.js"></script>

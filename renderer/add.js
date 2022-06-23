@@ -83,7 +83,7 @@ function saveEthogramTable(){
   let ethogram = []
   const rows = document.getElementById("ethogram-table-body").getElementsByTagName("tr")
   console.log(rows)
-  for(let i = 0; i < rows.length - 1; i++){
+  for(let i = 0; i < rows.length; i++){
     let row = rows[i]
     console.log(row)
     const vals = row.getElementsByTagName("td")

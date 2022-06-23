@@ -89,6 +89,9 @@ function main () {
         let thisObservation = new ObservationDataStore({ name: observationID.project + "-" + observationID.observation})
         let obsJson = thisObservation.getData()
         codingWindow.send('obsJson', obsJson)
+        const project = new ProjectDataStore({ name: observationID.project })
+        let projJson = project.getData()
+        codingWindow.send('projectJson', projJson)
       })
       // cleanup
       codingWindow.on('closed', () => {
@@ -154,10 +157,16 @@ function main () {
     }
   })
 
-  ipcMain.on('close-edit-window', () => {
-    if(editProjectWin){
-      editProjectWin.close();
+  ipcMain.on('close-coding-window', () => {
+    if(codingWindow){
+      codingWindow.close();
     }
+  })
+
+  ipcMain.on("save-codes", (event, observation) => {
+    console.log(observation)
+    const myObservation = new ObservationDataStore({ name: observation.projectName + "-" + observation.observationName})
+    myObservation.updateCodes(observation)
   })
 
 
@@ -181,24 +190,6 @@ function main () {
     }).catch(err => {
       console.log(err)
     })
-    /*
-    dialog.showOpenDialog({
-      properties: ['openFile', 'multiSelections'],
-      filters: [
-          { name: 'Movies', extensions: ['mp4'] }
-      ]
-    }), (files) => {
-      console.log("hello")
-      console.log(files)
-        if (files !== undefined) {
-          let toPrint = ""
-          for(let file in files){
-            toPrint += file + ","
-          }
-        }
-        console.log({files: toPrint, rowID: "row"+rowLocation})
-        editProjectWin.send('file-names', {files: toPrint, rowID: "row"+rowLocation});
-    });*/
   })
 }
 
