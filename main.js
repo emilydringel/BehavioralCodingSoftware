@@ -169,9 +169,55 @@ function main () {
     myObservation.updateCodes(observation)
   })
 
+  ipcMain.on("export-observation", (event, observation) => {
+    let defaultName  = observation.projectName + "-" + observation.observationName
+    var json = observation.data
+    console.log(json)
+    var fields = Object.keys(json[0])
+    var replacer = function(key, value) { return value === null ? '' : value } 
+    var csv = json.map(function(row){
+      return fields.map(function(fieldName){
+        return JSON.stringify(row[fieldName], replacer)
+      }).join(',')
+    })
+    csv.unshift(fields.join(',')) // add header column
+    csv = csv.join('\r\n');
+    console.log(csv)
+    let innerText = csv
+    // You can obviously give a direct path without use the dialog (C:/Program Files/path/myfileexample.txt)
+    dialog.showSaveDialog({
+      title: 'Select the File Path to save',
+      defaultPath: path.join(__dirname, '../' + defaultName + ".csv"),
+      // defaultPath: path.join(__dirname, '../assets/'),
+      buttonLabel: 'Save',
+      // Restricting the user to only Text Files.
+      filters: [
+          {
+              name: 'CSV Only',
+              extensions: ['csv']
+          }, ],
+      properties: []
+  }).then(file => {
+      // Stating whether dialog operation was cancelled or not.
+      console.log(file.canceled);
+      if (!file.canceled) {
+          console.log(file.filePath.toString());
+            
+          // Creating and Writing to the sample.txt file
+          fs.writeFile(file.filePath.toString(), 
+                       innerText, function (err) {
+              if (err) throw err;
+              console.log('Saved!');
+          });
+      }
+  }).catch(err => {
+      console.log(err)
+  });
+  })
+
+
 
   ipcMain.on('open-dialog', (event, rowLocation) => {
-    console.log(rowLocation)
     dialog.showOpenDialog(mainWindow, {
       properties: ['openFile', 'multiSelections'],
       filters: [

@@ -4,7 +4,7 @@ var video = document.getElementById('video');
 var observationDetails;
 var projectDetails;
 
-var currentSubject;
+var currentSubject = null;
 var currentTime = 0;
 var emptyDataRows = 11; 
 var lastDataRow = null;
@@ -172,6 +172,9 @@ document.addEventListener('keypress', function(e){
       let data = {}
       data.startTime = currentTime;
       data.subject = currentSubject;
+      if(!currentSubject){
+        data.subject = "";
+      }
       data.behavior = projectDetails.ethogram[row].behaviorName;
       data.endTime = "";
       data.modifier = "";
@@ -276,4 +279,8 @@ document.getElementById("saveAndCloseProject").addEventListener('click', functio
 
 document.getElementById("close").addEventListener('click', function(e){
   ipcRenderer.send('close-coding-window')
+})
+
+document.getElementById("export").addEventListener('click', function(e){
+  ipcRenderer.send('export-observation', observationDetails)
 })
