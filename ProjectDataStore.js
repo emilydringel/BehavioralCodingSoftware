@@ -26,6 +26,15 @@ class ProjectDataStore extends Store {
   getData(){
       return this.projectData || {}
   }
+
+  updateObservations(obs){
+    if(this.projectData.observations){
+      this.projectData.observations.push(obs)
+    }else{
+      this.projectData.observations = [obs]
+    }
+    return this.saveData()
+  }
 }
 
 module.exports = ProjectDataStore

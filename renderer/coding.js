@@ -6,7 +6,7 @@ var projectDetails;
 
 var currentSubject = null;
 var currentTime = 0;
-var emptyDataRows = 11; 
+var emptyDataRows = 6; 
 var lastDataRow = null;
 var currentData;
 
@@ -15,7 +15,6 @@ document.getElementById("video").addEventListener("timeupdate", function(e){
 });
 
 ipcRenderer.on('obsJson', (event, obsData) => {
-    console.log(obsData)
     observationDetails = obsData
     if(obsData.videos.length>0){
       var source = document.createElement('source');
@@ -46,7 +45,7 @@ ipcRenderer.on('obsJson', (event, obsData) => {
       row = observationDetails.data[row]
       tableBody.innerHTML = tableBody.innerHTML + 
       `<tr class="dataRow" id=`+ row.behavior + row["startTime"] +`> 
-          <td scope="row" class="time">`+row.startTime.toString().substring(0,3)+`</td>
+          <td class="time">`+row.startTime.toString().substring(0,3)+`</td>
           <td class="endtime">`+row.endTime.toString().substring(0,3)+`</td>
           <td class="involvedSubject">`+row.subject+`</td>
           <td class="behavior">`+row.behavior+`</td>
@@ -54,11 +53,11 @@ ipcRenderer.on('obsJson', (event, obsData) => {
         </tr>`
       count++
     }
-    emptyDataRows=11-count;
+    emptyDataRows=6-count;
     lastDataRow = tableBody.lastChild
-    while(count<11){
+    while(count<6){
       tableBody.innerHTML = tableBody.innerHTML + `<tr> 
-          <td scope="row" class="time"></td>
+          <td class="time"></td>
           <td class="endtime"></td>
           <td class="involvedSubject"></td>
           <td class="behavior"></td>
@@ -72,11 +71,10 @@ ipcRenderer.on('obsJson', (event, obsData) => {
     const tableBody = document.getElementById("behavior-table-body")
     tableBody.innerHTML = ""
     let count = 0
-    console.log(projectDetails.ethogram)
     for(row in projectDetails.ethogram){
       renderEthogramRow(projectDetails.ethogram[row])
       count++
-    }while(count<13){
+    }while(count<11){
       const empty = {behaviorName: "", shortcut: ""}
       renderEthogramRow(empty)
       count++
@@ -88,7 +86,7 @@ ipcRenderer.on('obsJson', (event, obsData) => {
     const behavior = row["behaviorName"]
     const shortcut = row["shortcut"]
     const newRow = `<tr class="behavior" id="`+behavior+`"> 
-        <td scope="row" class="name">`+behavior+`</td>
+        <td class="name">`+behavior+`</td>
         <td class="shortcut">`+shortcut+`</td>
       </tr>`
     tableBody.innerHTML = tableBody.innerHTML + newRow
@@ -101,23 +99,14 @@ ipcRenderer.on('obsJson', (event, obsData) => {
     let count = 0
     for(s in observationDetails.associatedSubjects){
       let subjectName = observationDetails.associatedSubjects[s]
-      let subjectDescription = "error in retrieving description"
-      for(subject in projectDetails.subjects){
-        if(projectDetails.subjects[subject].subjectName == subjectName){
-          subjectDescription = projectDetails.subjects[subject].subjectDescription
-          break;
-        }
-      }
       const newRow = `<tr class="subject" id="`+subjectName+`"> 
-        <td scope="row" class="subjectName">`+subjectName+`</td>
-        <td class="subjectDescription">`+subjectDescription+`</td>
+        <td class="subjectName">`+subjectName+`</td>
       </tr>`
       tableBody.innerHTML = tableBody.innerHTML + newRow
       count++;
-    }while(count<4){
+    }while(count<3){
       const newRow = `<tr> 
-        <td scope="row" class="subjectName"></td>
-        <td class="subjectDescription"></td>
+        <td class="subjectName"></td>
       </tr>`
       tableBody.innerHTML = tableBody.innerHTML + newRow
       count++;
@@ -147,25 +136,36 @@ document.addEventListener('click', function(e){
 })
 
 document.addEventListener('keyup', function(e){
-  console.log(e.key)
   if(e.key === "Backspace"){
     //remove from data
     let behaviorName = document.getElementsByClassName('selectedData')[0].getElementsByClassName("behavior")[0]
-    console.log(behaviorName)
     let info = document.getElementsByClassName('selectedData')[0].id
     for(datum in observationDetails.data){
-      if(observationDetails.data[datum][behavior] + observationDetails.data[datum][startTime] === info){
-        array.splice(datum, 1);
+      if(observationDetails.data[datum]["behavior"] + observationDetails.data[datum]["startTime"] === info){
+        observationDetails.data.splice(datum, 1);
       }
     }
+    if(lastDataRow == document.getElementsByClassName('selectedData')[0]){
+      lastDataRow = lastDataRow.previousSibling
+    }
     Array.from(document.querySelectorAll('.selectedData')).forEach((el) => el.remove());
-  }else{
+    if(observationDetails.data.length<6){
+        let tableBody = document.getElementById("data-table-body")
+        let newRow = document.createElement("tr")
+        newRow.innerHTML = `<td class="time"></td>
+        <td class="endtime"></td>
+        <td class="involvedSubject"></td>
+        <td class="behavior"></td>
+        <td class="modifier"></td>`
+        tableBody.appendChild(newRow)
+        emptyDataRows++;
+    }
+  }else if(document.getElementsByClassName("selectedData").length > 0){
     Array.from(document.querySelectorAll('.selectedData')).forEach((el) => el.classList.remove('selectedData'));
   }
 })
 
 document.addEventListener('keypress', function(e){
-  console.log(e.key)
   for(row in projectDetails.ethogram){
     if(e.key == projectDetails.ethogram[row].shortcut){
       //start behavior
@@ -195,15 +195,12 @@ document.addEventListener('keypress', function(e){
       }
       observationDetails.data[maxStartTimeCodeIndex].endTime = endTime;
       let htmlNode = document.getElementById(observationDetails.data[maxStartTimeCodeIndex].behavior + observationDetails.data[maxStartTimeCodeIndex].startTime)
-      console.log(htmlNode)
       let endTimes = htmlNode.getElementsByClassName("endtime")
-      console.log(endTimes)
       endTimes[0].innerHTML = endTime.toString().substring(0,3);
     }
   }if(isFinite(e.key)&&document.getElementById("options").style.display=="block"){
     let choice = document.getElementById("option"+e.key)
     let modifier = choice.innerHTML.substring(3)
-    console.log(modifier)
     document.getElementById("modifierDiv").style.display="none"
     document.getElementById("options").style.display="none"
     currentData.modifier = modifier
@@ -268,7 +265,6 @@ document.getElementById("chooseModifier").addEventListener('click', function(eve
 });
 
 document.getElementById("saveProject").addEventListener('click', function(e){
-  console.log(observationDetails)
   ipcRenderer.send('save-codes', observationDetails)
 })
 

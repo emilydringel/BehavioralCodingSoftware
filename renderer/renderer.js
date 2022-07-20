@@ -9,29 +9,51 @@
 
 const { ipcRenderer } = require('electron')
 
-// delete todo by its text value ( used below in event listener)
-/*
-const deleteTodo = (e) => {
-  ipcRenderer.send('delete-todo', e.target.textContent)
-}
-*/
-
 let currentProjects = {}
 
-// on receive todos
+let activeProject = null
+
+let openProjectTemplate = `<div id="settings">
+    <img id="settings-icon" src="../images/settings-icon.png" alt="Settings">
+    </div>
+    <div id="project-body">
+    <div id="project-name">
+        <span id="project-name-span"></span>
+    </div>
+    <div id="inner-data">
+        Open Observation: <br>
+        <ul id="observation-list">
+            <li><button id="new-obs">New Observation</button></li>
+        </ul>
+        Export Data:
+        <ul>
+            <li><button class="export-button" disabled>Export as Folder</button></li>
+            <li><button class="export-button" disabled>Export as Sheet</button></li>
+        </ul>
+        <span class="error">*Note: These export buttons do not currently <br>work. For now, export each observation <br>individually.*</span>
+    </div>
+    </div>`
+
+// on receiving projects
 ipcRenderer.on('projects', (event, projects) => {
-  // get the todoList ul
+  // create project list 
   const projectList = document.getElementById('projects')
   // create html string
-  let newHTML = `<option value="none" selected disabled hidden>Select an Option</option>`
+  document.getElementById("project-list").innerHTML = `<li class ="nav-item active" id="nav-header-parent">
+  <div id="nav-header">Projects</div>
+</li>`
   for(let i=0; i<projects.length; i++){
-    newHTML += `<option value="` + projects[i]+`">`+projects[i]+`</option>`
+    let newHTML =`<li class ="nav-item">
+      <button id="`+projects[i]+`" class = "nav-link project">`
+      +projects[i]+`</button></li>`
+    console.log(newHTML)
+    document.getElementById("project-list").innerHTML += newHTML;
   }
-  document.getElementById("projects").innerHTML = newHTML;
-  document.getElementById("observationProjects").innerHTML = newHTML;
+  let addProjectButton = `<li class ="nav-item"><button id="add-project">New Project</button></li>`
+  document.getElementById("project-list").innerHTML += addProjectButton;
   currentProjects=projects
 }, '')
-
+/*
 document.getElementById("createProject").addEventListener('click', function(event) {
   let val = document.getElementById("projectName").value
   if(unique(val)){
@@ -52,36 +74,68 @@ function unique(projectName){
   }
   return true;
 }
+*/
 
-document.getElementById("openProject").addEventListener('click', function(event) {
+document.addEventListener('click', function(e){
+  if(e.target && e.target.classList.contains('project')){
+    ipcRenderer.send('get-observation-options', e.target.id)
+    activeProject = e.target.id
+    e.target.classList.add("active")
+  }if(e.target && e.target.classList.contains('observation')){
+    let project = activeProject
+    let observation = e.target.id
+    let observationID = {"project": project, "observation": observation}
+    ipcRenderer.send('coding-window', observationID)
+  }if(e.target && e.target.id == "add-project"){
+    let val = "untitled"
+    let jsonName = {"name": val}
+    ipcRenderer.send('edit-project-window',jsonName)
+  }if(e.target && e.target.id == "settings-icon"){
+    let val = activeProject
+    let jsonName = {"name": val}
+    ipcRenderer.send('edit-project-window',jsonName)
+  }if(e.target && e.target.id == "settings"){
+    let val = activeProject
+    let jsonName = {"name": val}
+    ipcRenderer.send('edit-project-window',jsonName)
+  }if(e.target && e.target.id == "new-obs"){
+    ipcRenderer.send('add-observation-window', activeProject)
+  }
+})
+/*
+document.getElementById("settings-icon").addEventListener('click', function(event) {
   let val = document.getElementById("projects").value
   let jsonName = {"name": val}
   ipcRenderer.send('edit-project-window',jsonName)
   reset(true)
 });
 
-function reset(bool){
-  if(bool){
-    document.getElementById('uniquenessError').innerHTML=""
-    document.getElementById('projectName').value=""
-    document.getElementById('projects').selectedIndex = 0;
-    document.getElementById('observations').selectedIndex = 0;
-  }
- 
-}
-
 document.getElementById("observationProjects").addEventListener('change', function(event){
   ipcRenderer.send('get-observation-options', this.value)
 });
+*/
 
 ipcRenderer.on('observation-options', (event, observations) => {
-  let newHTML = `<option value="none" selected disabled hidden>Select an Option</option>`
+  document.getElementById("project-section").innerHTML = openProjectTemplate
   for(let i=0; i<observations.length; i++){
-    newHTML += `<option value="` + observations[i]+`">`+observations[i]+`</option>`
+    let newHTML = `<li><button id="`+observations[i]+`" class="observation">`+observations[i]+`</button></li>`
+    document.getElementById("observation-list").innerHTML = newHTML + document.getElementById("observation-list").innerHTML
   }
-  document.getElementById("observations").innerHTML = newHTML;
+  document.getElementById("project-name-span").innerHTML = activeProject
 }, '')
 
+ipcRenderer.on('updated-observations', (event, observationData) => {
+  if(observationData.projectName!=activeProject){
+    return
+  }
+  document.getElementById("project-section").innerHTML = openProjectTemplate
+  for(let i=0; i<observationData.observations.length; i++){
+    let newHTML = `<li><button id="`+ observationData.observations[i]+`" class="observation">`+observationData.observations[i]+`</button></li>`
+    document.getElementById("observation-list").innerHTML = newHTML + document.getElementById("observation-list").innerHTML
+  }
+  document.getElementById("project-name-span").innerHTML = activeProject
+}, '')
+/*
 document.getElementById("openObservation").addEventListener('click', function(event) {
   let project = document.getElementById("observationProjects").value
   let observation = document.getElementById("observations").value
@@ -89,3 +143,5 @@ document.getElementById("openObservation").addEventListener('click', function(ev
   ipcRenderer.send('coding-window', observationID)
   reset(true)
 });
+*/
+

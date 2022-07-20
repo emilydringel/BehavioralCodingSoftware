@@ -1,0 +1,43 @@
+body{
+    padding: 15px;
+}
+
+h2{
+    font-size: 18px;
+    color: grey;
+}
+
+#my-form{
+    padding: 15px;
+    background-color: rgb(233, 233, 233);
+}
+
+.save-btn{
+    margin: 10px;
+    background-color: #004ba05c;
+}
+
+.form-section{
+    margin-bottom: 15px;
+}
+
+#vids{
+    margin-bottom: 0px;
+    overflow-wrap: break-word;
+}
+
+#save-and-code{
+    margin-top: 0px;
+}
+
+.instructions{
+    font-size: 12px;
+}
+
+h1{
+    color: #1976d2;
+}
+
+#selected-video{
+    font-size: 14px;
+}
