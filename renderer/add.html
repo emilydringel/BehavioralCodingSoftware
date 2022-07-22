@@ -11,80 +11,65 @@
   </head>
 
   <body>
-    <h1>Project Settings</h1>
-    <div class="row">
-      <div class="col-3">
-        <nav class ="navbar"> 
-          <ul class ="nav navbar-nav">
-          <li class ="nav-item active">
-            <button id="ethogramPage" class ="nav-link">Ethogram</button>
-          </li>
-          <li class ="nav-item">
-          <button id="subjectPage" class ="nav-link"> Subjects </button>
-          </li>
-          <li class ="nav-item">
-          <button id="observationsPage" class ="nav-link"> Observations </button>
-          </li>
-          </ul>
-        </nav>
-      </div>
-      <div class="col-9">
-          <h2>
-            <div id="left">
-              Project Name: 
-              <span id="projectName"></span>
-            </div>
-            <div id="right">
-              <img id="delete-icon" src="../images/delete-icon.png" alt="delete">
-            </div>
-          </h2>
-          <div id="ethogram">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col" class="name">Behavior</th>
-                  <th scope="col" class="shortcut">Shortcut</th>
-                  <th scope="col" class="modifiers">Modifiers</th>
-                  <th scope="col" class="description">Description</th>
-                  <th scope="col" class="delete">Delete</th>
-                </tr>
-              </thead>
-              <tbody id="ethogram-table-body"></tbody>
+    <div id="top-info">
+        <h1>
+            <span id="project-name-span">Project Name</span>
+        </h1>
+        <h2>
+            New Observation
+        </h2>
+    </div>
+    <div id="my-form">
+        <div id="rename-section" class="form-section">
+            <label for="rename"><strong>Rename Project:</strong></label>
+            <input type="text" id="rename" name="rename"><br>
+            <span id="rename-error" class="error"></span>
+        </div>
+        <div id="ethogram" class="form-section">
+            <table class="a-table">
+            <thead>
+            <tr>
+                <th class="name">Behavior</th>
+                <th class="shortcut">Shortcut</th>
+                <th class="modifiers">Modifiers</th>
+                <th class="description">Description</th>
+                <th class="delete">Delete</th>
+            </tr>
+            </thead>
+            <tbody id="ethogram-table-body"></tbody>
             </table>
-          </div>
-          <div id="subjects">
-            <table class="table table-striped">
+            <span id="ethogram-error" class="error"></span>
+            <div class="spaced-btns">
+                <button id="addRowEthogram">Add Behavior</button>
+                <button id="deleteBehavior" disabled>Delete Behavior</button>
+            </div>
+        </div>
+        
+        <div id="observations" class="form-section">
+            <table class="a-table">
               <thead>
                 <tr>
-                  <th scope="col" class="subjectName">Subject Name</th>
-                  <th scope="col" class="subjectDescription">Subject Description</th>
-                  <th scope="col" class="delete">Delete</th>
-                </tr>
-              </thead>
-              <tbody id="subject-table-body"></tbody>
-            </table>
-          </div>
-          <div id="observations">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col" class="observationName">Observation Name</th>
-                  <th scope="col" class="associatedSubjects">Associated Subject(s)</th>
-                  <th scope="col" class="videos">Video(s)</th>
-                  <th scope="col" class="delete">Delete</th>
+                  <th class="observationName">Observation Name</th>
+                  <th class="associatedSubjects">Associated Subject(s)</th>
+                  <th class="videos">Video(s)</th>
+                  <th class="delete">Delete</th>
                 </tr>
               </thead>
               <tbody id="observation-table-body"></tbody>
             </table>
-          </div>
-          <button id="addRow" class="addBtn">+</button>
-          <div id="buttons">
-            <button id="saveProject" class="large-button">Save</button>
-            <button id="saveAndCloseProject" class="large-button">Save & Close</button>
-            <button id="close" class="large-button">Close</button>
-          </div>
+            <span id="observations-error" class="error"></span>
+            <div class="spaced-btns">
+                <button id="addRowObservations">Add Observation</button>
+                <button id="deleteObservation" disabled>Delete Observation</button>
+            </div>
+        </div>
         
-      </div>
+    </div>
+    <div id="bottom-info" class="spaced-btns">
+            <button id="saveProject" class="save-btn">Save</button>
+            <button id="saveAndCloseProject" class="save-btn">Save & Close</button>
+            <button id="close" class="no-save-btn">Close Only</button>
+            <button id="deleteProject" class="no-save-btn">Delete Project</button>
     </div>
     <script src="../contents/jquery/3.6.0/jquery-3.6.0.min.js"></script>
     <script src="./add.js"></script>

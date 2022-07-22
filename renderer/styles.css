@@ -1,54 +1,121 @@
-/* styles.css */
-
-/* Add styles here to customize the appearance of your app */
-
-label{
-    width: 400px;
-    margin: 20px;
-    float: left;
-    margin-bottom:0px;
+#logo{
+    height: 45px;
 }
 
-.field{
-    width: 100%;
-    height: 100%;
+.navbar-brand{
+    padding: 10%;
+    
 }
 
-.obsField{
-    margin-bottom: 10px;
-}
-
-.inputContainer{
-    width: 200px;
-    height: 30px;
-    position: relative;
-    top: 30px;
-    float: left;
-}
-
-input[type=submit]{
-    position: relative;
-    top: 30px;
-    margin: 20px;
-    margin-top: 0px;
-}
-
-#uniquenessError{
-    height: 20px;
-    color: red;
+.nav-link{
+    border: none;
+    background-color: white;
+    color: #1976d2;
     font-size: 14px;
-    width: 600px;
-    margin-left: 20px;
 }
 
-#projectNameLabel{
-    margin-top: 20px;
+.nav-link:hover{
+    color: #004ba0;
+    
 }
 
-#createProject{
-    margin-bottom: 0px;
+.navbar-nav{
+    width: 100%
 }
 
-#openObservation{
-    top: 45px;
+.active > .nav-link{
+    color: #004ba0;
+    font-weight: bold;
+}
+
+.nav-item{
+    padding-left: 20%;
+}
+
+.nav-item>button{
+    text-align: left;
+    font-size: 14px;
+}
+
+#nav-header{
+    padding-top: 8px;
+    font-weight: bold;
+}
+
+#nav-header-parent{
+    height: 40px;
+}
+
+#project-section{
+    text-align: center;
+}
+
+#project-body{
+    position:relative;
+    top:30px;
+    left:0;
+    width: 300px;
+}
+
+#project-name{
+    color: #004ba0;
+    font-weight: bold;
+    font-size: 18px;
+    width: 300px;
+}
+
+#inner-data{
+    position: relative;
+    font-size: 14px;
+    left: 15px;
+    top: 15px;
+}
+
+#settings{
+    position:fixed;
+    top:0;
+    right:0;
+    padding: 20px;
+}
+
+#settings-icon{
+    width: 30px;
+}
+
+ul{
+    list-style: none;
+}
+
+li{
+    margin: 5px;
+}
+
+.export-button{
+    margin: 3px;
+}
+
+#logo-big{
+    position: relative;
+    width: 250px;
+    top: 100px;
+}
+
+#addObservation{
+    font-size: 14px;
+}
+
+.observation{
+    border: none;
+    background-color: white;
+    color: #1976d2;
+    font-size: 14px;
+}
+
+.observation:hover{
+    color: #004ba0;
+    
+}
+
+.container{
+    margin: 0px !important;
 }

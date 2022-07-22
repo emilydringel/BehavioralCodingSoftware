@@ -1,0 +1,54 @@
+/* styles.css */
+
+/* Add styles here to customize the appearance of your app */
+
+label{
+    width: 400px;
+    margin: 20px;
+    float: left;
+    margin-bottom:0px;
+}
+
+.field{
+    width: 100%;
+    height: 100%;
+}
+
+.obsField{
+    margin-bottom: 10px;
+}
+
+.inputContainer{
+    width: 200px;
+    height: 30px;
+    position: relative;
+    top: 30px;
+    float: left;
+}
+
+input[type=submit]{
+    position: relative;
+    top: 30px;
+    margin: 20px;
+    margin-top: 0px;
+}
+
+#uniquenessError{
+    height: 20px;
+    color: red;
+    font-size: 14px;
+    width: 600px;
+    margin-left: 20px;
+}
+
+#projectNameLabel{
+    margin-top: 20px;
+}
+
+#createProject{
+    margin-bottom: 0px;
+}
+
+#openObservation{
+    top: 45px;
+}

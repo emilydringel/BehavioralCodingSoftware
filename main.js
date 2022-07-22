@@ -17,6 +17,7 @@ require('electron-reload')(__dirname)
 const projectData = new DataStore({ name: 'devDB' })
 let editProjectWin
 let codingWindow
+let addObsWindow
 
 function main () {
   // todo list window
@@ -99,12 +100,44 @@ function main () {
       })
     }
   })
+
+  ipcMain.on('add-observation-window', (event, projectID) => {
+    // if addTodoWin does not already exist
+    if (!addObsWindow) {
+      // create a new add todo window
+      addObsWindow = new Window({
+        file: path.join('renderer', 'new-observation.html'),
+        width: 630, //330
+        height: 440, 
+        // close with the main window
+        parent: mainWindow,
+      })
+      addObsWindow.once('show', () => {
+        let project = new ProjectDataStore({ name: projectID })
+        let projectInfo = project.getData()
+        console.log(projectInfo)
+        addObsWindow.send('project-info', projectInfo)
+      })
+      // cleanup
+      addObsWindow.on('closed', () => {
+        addObsWindow = null
+      })
+    }
+  })
   
   ipcMain.on('addProject', (event, project) => {
     const updatedProjects = projectData.addProject(project.name).projects
     const newProject = new ProjectDataStore({ name: project.name })
     newProject.createProject(project)
     mainWindow.send('projects', updatedProjects)
+    let observations = []
+    let fullObs = newProject.getData().observations
+    for(let obs in fullObs){
+      obs = fullObs[obs]
+      observations.push(obs.observationName)
+    }
+    let observationData = {projectName: project.name, observations: observations}
+    mainWindow.send('updated-observations', observationData)
   })
 
   ipcMain.on('edit-observation-base-data', (event, observation) => {
@@ -118,28 +151,43 @@ function main () {
     newObservation.createObservation(observation)
   })
 
+  ipcMain.on('add-obs-to-proj', (e, obs) => {
+    const myProject = new ProjectDataStore({ name: obs.projectName})
+    myProject.updateObservations(obs)
+    let observations = []
+    let fullObs = myProject.getData().observations
+    for(let obs in fullObs){
+      obs = fullObs[obs]
+      observations.push(obs.observationName)
+    }
+    let observationData = {projectName: obs.projectName, observations: observations}
+    mainWindow.send('updated-observations', observationData)
+  })
+
   ipcMain.on('match-observations', (event, project) => {
     const dir = app.getPath('userData')
     const files = fs.readdirSync(dir)
     let observationNames = []
+    console.log(project.observations)
     for(let observation in project.observations){
-      observationNames.push(observation.observationName)
+      console.log(project.observations[observation].observationName)
+      observationNames.push(project.observations[observation].observationName+".json")
     }
     for (const file of files) {
+      console.log(file)
       if(file.substring(0,project.name.length+1)===project.name+"-"){
+        console.log("file matches format")
         if(!observationNames.includes(file.substring(project.name.length+1))){
+          console.log(file.substring(project.name.length+1))
+          console.log("not in obs names")
           try {
-            fs.unlinkSync(path)
+            fs.unlinkSync(app.getPath('userData') + "/"+file)
             //file removed
           } catch(err) {}
         }
       }
     }
   })
-
-  //save obs -- delete old if exists and add new -- need to figure out a way to save the extra data from the old one!!
-  // actually bc there is no way to edit an observation, might be easier than that -- think thru it!!
-  //match obs -- look at all obs under the name, make sure they match the ones in the ipc renderer
 
   ipcMain.on('delete-project', (event, project) => {
     const updatedProjects = projectData.deleteProject(project).projects
@@ -160,6 +208,12 @@ function main () {
   ipcMain.on('close-coding-window', () => {
     if(codingWindow){
       codingWindow.close();
+    }
+  })
+
+  ipcMain.on('close-add-obs-window', () => {
+    if(addObsWindow){
+      addObsWindow.close();
     }
   })
 
@@ -215,11 +269,9 @@ function main () {
   });
   })
 
-
-
   ipcMain.on('open-dialog', (event, rowLocation) => {
     dialog.showOpenDialog(mainWindow, {
-      properties: ['openFile', 'multiSelections'],
+      properties: ['openFile'],
       filters: [
           { name: 'Movies', extensions: ['mp4'] }
       ]
@@ -236,6 +288,37 @@ function main () {
     }).catch(err => {
       console.log(err)
     })
+  })
+
+  ipcMain.on('open-dialog-two', (event) => {
+    dialog.showOpenDialog(mainWindow, {
+      properties: ['openFile'],
+      filters: [
+          { name: 'Movies', extensions: ['mp4'] }
+      ]
+    }).then(result => {
+      if(!result.canceled){
+        console.log(result.filePaths)
+        let files = result.filePaths
+        if (files !== undefined) {
+          addObsWindow.send('selected-file', files[0]);
+        } 
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  })
+
+  ipcMain.on("project-name-uniqueness", (e, name) => {
+    for(let projectName in projectData.projects){
+      console.log(projectData.projects[projectName])
+      if(projectData.projects[projectName] === name){
+        editProjectWin.send('project-name-uniqueness-results', false)
+        return
+      }
+    }
+    editProjectWin.send('project-name-uniqueness-results', true)
+    return true
   })
 }
 

@@ -1,35 +1,4 @@
-h1{
-    font-size: 28px;
-    background-color: #1976d2;
-    border-color: #004ba0;
-    border-style: none none solid none;
-    border-width: 30px;
-    padding: 20px;
-    color: white;
-    width: 100%;
-    margin: 0px;
-}
-
-.highlight-color{
-    color: #1976d2
-}
-
-.highlight-color-dark{
-    color: #004ba0
-}
-
-.highlight-color-light{
-    color: #63a4ff
-}
-
-.small-button{
-    background-color: #63a4ff;
-    width: 75px;
-    height: 28px;
-}
-
-.large-button{
-    background-color: #63a4ff;
-    width: 150px;
-    height: 28px;
+.error{
+    color: red;
+    font-size: 12px;
 }

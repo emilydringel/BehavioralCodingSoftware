@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>New Observation</title>
+
+    <link rel="stylesheet" href="../contents/bootstrap/5.1.3/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="template.css">
+    <link rel="stylesheet" href="new-observation.css">
+  </head>
+
+  <body>
+    <h1>
+        <span id="project-name-span"></span>
+    </h1>
+    <h2>
+        New Observation
+    </h2>
+    <div id="my-form">
+        <div id="name" class="form-section">
+            <label for="observation-name">Observation Name:</label><br>
+            <input type="text" id="observation-name" name="observation-name"><br>
+        </div>
+        <div id="subj" class="form-section">
+            <label for="subjects">Subjects:</label><br>
+            <input type="text" id="subjects" name="subjects"><br>
+            <span class="instructions">Comma- and space- separate subjects' names.</span><br>
+        </div>
+        <div id="vids" class="form-section">
+            <span id="video-instructions">Video:</span>
+            <span id="selected-video"></span><br><button id="select-video">Select</button>
+        </div>
+    </div>
+    <button id="save-and-return" class="save-btn">Save and Return to Homepage</button>
+    <button id="save-and-code" class="save-btn">Save and Code Observation</button>
+
+    <script src="../contents/jquery/3.6.0/jquery-3.6.0.min.js"></script>
+    <script src="./new-observation.js"></script>
+    <script src="../contents/popper/2.4.4/popper.min.js"></script>
+    <script src="../contents/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+
+  </body>
+
+</html>
