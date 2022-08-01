@@ -238,10 +238,12 @@ function main () {
     csv = csv.join('\r\n');
     console.log(csv)
     let innerText = csv
+    const homeDir = app.getPath('home');
+    const desktopDir = path.resolve(homeDir, 'Desktop');
     // You can obviously give a direct path without use the dialog (C:/Program Files/path/myfileexample.txt)
     dialog.showSaveDialog({
       title: 'Select the File Path to save',
-      defaultPath: path.join(__dirname, '../' + defaultName + ".csv"),
+      defaultPath: desktopDir + '/' + defaultName + ".csv",
       // defaultPath: path.join(__dirname, '../assets/'),
       buttonLabel: 'Save',
       // Restricting the user to only Text Files.

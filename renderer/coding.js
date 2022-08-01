@@ -8,6 +8,7 @@ var currentSubject = null;
 var currentTime = 0;
 var emptyDataRows = 6; 
 var lastDataRow = null;
+var frameTime = 1/30;
 var currentData;
 
 document.getElementById("video").addEventListener("timeupdate", function(e){
@@ -45,8 +46,8 @@ ipcRenderer.on('obsJson', (event, obsData) => {
       row = observationDetails.data[row]
       tableBody.innerHTML = tableBody.innerHTML + 
       `<tr class="dataRow" id=`+ row.behavior + row["startTime"] +`> 
-          <td class="time">`+row.startTime.toString().substring(0,3)+`</td>
-          <td class="endtime">`+row.endTime.toString().substring(0,3)+`</td>
+          <td class="time">`+ (row.startTime/60).toString().substring(0,5)+`</td>
+          <td class="endtime">`+ (row.endTime/60).toString().substring(0,5)+`</td>
           <td class="involvedSubject">`+row.subject+`</td>
           <td class="behavior">`+row.behavior+`</td>
           <td class="modifier">`+row.modifier+`</td>
@@ -196,7 +197,7 @@ document.addEventListener('keypress', function(e){
       observationDetails.data[maxStartTimeCodeIndex].endTime = endTime;
       let htmlNode = document.getElementById(observationDetails.data[maxStartTimeCodeIndex].behavior + observationDetails.data[maxStartTimeCodeIndex].startTime)
       let endTimes = htmlNode.getElementsByClassName("endtime")
-      endTimes[0].innerHTML = endTime.toString().substring(0,3);
+      endTimes[0].innerHTML = (endTime/60).toString().substring(0,5);
     }
   }if(isFinite(e.key)&&document.getElementById("options").style.display=="block"){
     let choice = document.getElementById("option"+e.key)
@@ -205,6 +206,21 @@ document.addEventListener('keypress', function(e){
     document.getElementById("options").style.display="none"
     currentData.modifier = modifier
     log(currentData)
+    
+  }if (document.getElementById("video").paused) { 
+    console.log(e.code)
+    if (e.key === ",") { //left arrow
+        //one frame back
+        document.getElementById("video").currentTime = Math.max(0, document.getElementById("video").currentTime - frameTime);
+        currentTime = document.getElementById("video").currentTime
+
+    } else if (e.key === ".") { //right arrow
+        //one frame forward
+        //Don't go past the end, otherwise you may get an error
+        document.getElementById("video").currentTime = Math.max(0, document.getElementById("video").currentTime + frameTime);
+        currentTime = document.getElementById("video").currentTime
+    
+      }
   }
 })
 
@@ -234,7 +250,7 @@ function applyModifiers(data, ethogramRow){
 
 function log(data){  
   observationDetails.data.push(data)
-  const dataHTML = `<td scope="row" class="time">`+ data["startTime"].toString().substring(0,3) +`</td>
+  const dataHTML = `<td scope="row" class="time">`+ (data["startTime"]/60).toString().substring(0,5) +`</td>
     <td class="endtime"></td>
     <td class="involvedSubject">`+data["subject"]+`</td>
     <td class="behavior">`+data["behavior"]+`</td>
